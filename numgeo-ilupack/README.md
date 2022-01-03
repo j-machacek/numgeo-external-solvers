@@ -18,8 +18,9 @@ Currently only the use on Linux Systems is supported by ILUPACK.
    Therein, XX is the directory correpsonding to you compiler.
 3. Open the Terminal in the numgeo-ilupack directory
 4. Use make to build the executable:
-   ```make clean
-      make all```
+   ```
+   make clean
+   make all```
 
 ## TODO
 

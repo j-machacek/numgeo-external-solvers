@@ -20,7 +20,8 @@ Currently only the use on Linux Systems is supported by ILUPACK.
 4. Use make to build the executable:
    ```
    make clean
-   make all```
+   make all
+   ```
 
 ## TODO
 

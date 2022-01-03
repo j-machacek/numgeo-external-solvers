@@ -57,10 +57,8 @@ program main
   integer(i8) :: ios
   
   
-  !call get_command(command_line)
-  !argument = command_line(18:len(command_line))
-
-  argument = trim("test_ilupack")
+  call get_command(command_line)
+  argument = command_line(18:len(command_line))
 
   if (print_times) then
     ! get initial system time

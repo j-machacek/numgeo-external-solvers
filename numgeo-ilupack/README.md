@@ -10,7 +10,16 @@ Program that solves a linear system of equations given in coordinate format usin
 ILUPACK [1] is a library for Multilevel Incomplete LU factorization, developed by Matthias Bollhoefer (TU Braunschweig). 
 
 It is freely available for scientific (non-commercial) use as a set of precompiled libraries from [[http://ilupack.tu-bs.de/]]. 
+Currently only the use on Linux Systems is supported by ILUPACK.
 
+## Building numgeo-ilupack
+1. Download the ILUPACK library from [[http://ilupack.tu-bs.de/]]
+2. Copy the required libraries from ilupack/lib/XX/ to numgeo-ilupack/lib.
+   Therein, XX is the directory correpsonding to you compiler.
+3. Open the Terminal in the numgeo-ilupack directory
+4. Use make to build the executable:
+   ```make clean
+      make all```
 
 ## TODO
 

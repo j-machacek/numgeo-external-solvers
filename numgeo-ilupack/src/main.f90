@@ -27,7 +27,7 @@
 module precision_
   integer, parameter, public  :: r8 = selected_real_kind(15,307)         !< 15 digits, range \([10^{-307} , 10^{+307}  - 1]\); 64 bits.
   integer, parameter, public  :: i8 = selected_int_kind(18)              !< Range \([-2^{63},+2^{63} - 1]\), 19 digits plus sign; 64 bits.
-  integer, parameter, public  :: i4 = selected_int_kind(9)                !< Range \([-2^{31},+2^{31} - 1]\), 10 digits plus sign; 32 bits.
+  integer, parameter, public  :: i4 = selected_int_kind(9)               !< Range \([-2^{31},+2^{31} - 1]\), 10 digits plus sign; 32 bits.
 end module precision_
 
 program main
@@ -140,7 +140,7 @@ program main
   !>### History
   !>* 03.01.2021, J. Machacek - Initial version
   !
-  subroutine solve_using_ilupack(A,r,ia,ja,ndof,nonzeros, solution)
+  subroutine solve_using_ilupack(A,r,ia,ja,ndof,nonzeros, solution, print_times)
     use precision_
     implicit none
     
@@ -151,6 +151,7 @@ program main
     real(r8)   , dimension(ndof)    , intent(inout) :: r         !! residual of the soe (right-hand-side)
     integer(i4), dimension(ndof+1)  , intent(inout) :: ia
     integer(i4), dimension(nonzeros), intent(inout) :: ja
+    logical                         , intent(in)    :: print_times
     
     real(r8)   , dimension(ndof)    , intent(out)   :: solution 
     
@@ -203,7 +204,7 @@ program main
     ! 'metisn'        Metis multilevel nested dissection by nodes
     ! 'metise'        Metis multilevel nested dissection by edges
     ! 'pq'            ddPQ strategy by Saad
-    ordering = 'amd'
+    ordering = 'rcm'
     
     ! threshold for ILU, default: 1e-2
     droptol = 1d-10
@@ -252,7 +253,7 @@ program main
                          condest, restol, maxit, elbow, lfil, lfilS, nrestart, mixedprecision, ind)
     
     ! print some information
-    call DGNLAMGinfo(param, PREC, ndof, ia_tmp, ja_tmp, A_tmp)
+    if (print_times) call DGNLAMGinfo(param, PREC, ndof, ia_tmp, ja_tmp, A_tmp)
     
     ! check for errors
     if (ierr /= 0) then

@@ -1,15 +1,59 @@
-################################################################################
-# Automatically-generated file. Do not edit!
-################################################################################
+#=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~=~
+#                                          numgeo
+#                     Copyright (C) 2021 Jan Machacek, Patrick Staubach
+#=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~=~
+#
+# PROGRAM: numgeo-mumps-mpi
+#
+#> author: Jan Machacek, jan-machacek@outlook.com
+#
+#
+#>### SUMMARY: 
+#> Program that solves a linear system of equations given in coordinate format using the
+#> mpi-version of the mumps solver. This software is part of the numgeo software developed by
+#> Jan Machacek and Patrick Staubach.
+#
+#
+#>### REVISION HISTORY
+#> 06.01.2021, J. Machacek - Initial version
+#
+#>### DISCLAIMER
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY, without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR PARTICULAR PURPOSE.
+#
+#=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~=~
 
 -include ../makefile.init
 
 RM := rm -rf
 
-# All of the sources participating in the build are defined here
--include sources.mk
--include subdir.mk
--include objects.mk
+# Every subdirectory with source files must be described here
+SUBDIRS := \
+. \
+
+# Add inputs and outputs from these tool invocations to the build variables 
+F90_SRCS += \
+./src/main.f90
+
+OBJS += \
+./main.o 
+
+# Each subdirectory must supply rules for building sources it contributes
+main.o: ./src/main.f90 
+	@echo 'Building file: $<'
+	@echo 'Invoking: GNU Fortran Compiler'
+	mpif90 -fopenmp  -lpthread -fPIC -funderscoring -O3 -Wall -c -fmessage-length=0 -o "$@" "$<"
+	@echo 'Finished building: $<'
+	@echo ' '
+
+main.o: ./src/main.f90
+
+# Objects
+USER_OBJS :=
+
+LIBS := -ldmumps -lmumps_common -lpord -lscalapack-openmpi -lopenblas -lesmumps -lscotch -lscotcherr -lscotcherrexit -lscotchmetis -lmetis
+
 
 ifneq ($(MAKECMDGOALS),clean)
 ifneq ($(strip $(C_DEPS)),)

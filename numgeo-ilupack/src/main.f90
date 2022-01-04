@@ -109,7 +109,7 @@ program main
   if (print_times) call system_clock(time_end2)
 
   ! now solve the system of equations using ilupack
-  call solve_using_ilupack(A,r,ia,ja,ndof,nonzeros, solution)
+  call solve_using_ilupack(A,r,ia,ja,ndof,nonzeros, solution, print_times)
 
   ! report the solution back to numgeo
   open(newunit=ios, file='numgeo-ext-solution-'//trim(argument)//'.numgeo', form='unformatted',access='stream')
@@ -164,105 +164,105 @@ program main
     integer  DGNLAMGfactor
     integer  DGNLAMGsolver
     integer  DGNLAMGnnz             !! logical number of nonzero entries of ILU
-  
+
     ! ILUPACK external functions
-    external DGNLAMGinit            !! init default parameter  
-    external DGNLAMGsol             !! solve a single linear system with `PREC'        
+    external DGNLAMGinit            !! init default parameter
+    external DGNLAMGsol             !! solve a single linear system with `PREC'
     external DGNLAMGdelete          !! release memory
     external DGNLAMGfactor          !! compute multilevel ILU `PREC'
     external DGNLAMGsolver          !! solve linear system Ax=b iteratively using the ILUPACK preconditioner
     external DGNLAMGnnz             !! logical number of nonzero entries of ILU
     external DGNLAMGinfo            !! display multilevel structure
-  
+
     ! ILUPACK external parameters
     integer         :: matching, maxit, lfil, lfilS, nrestart, ierr, mixedprecision, ind(ndof)
     character       :: ordering*20
     doubleprecision :: droptol, droptolS, condest, restol, elbow
     integer*8       :: param, PREC
-    
+
     ! compute a copy of a (there are situations where this might be required since ILUPACK alters the input matrix)
     ia_tmp = ia
     ja_tmp = ja
-    A_tmp  = A  
-    
+    A_tmp  = A
+
     ! ----------------------------------------
-    ! ILUPACK initialize default parameters 
+    ! ILUPACK initialize default parameters
     ! ----------------------------------------
-    
+
     call DGNLAMGinit(ndof, ia_tmp, ja_tmp, A_tmp, matching, ordering, droptol, droptolS, condest, restol,  &
                      maxit, elbow, lfil, lfilS, nrestart, mixedprecision, ind)
-                     
-                     
+
+
     ! ----------------------------------------
     ! ILUPACK settings
     ! ----------------------------------------
-    
+
     ! multilevel orderings
     ! 'amd' (default) Approximate Minimum Degree
-    ! 'mmd'           Minimum Degree            
+    ! 'mmd'           Minimum Degree
     ! 'rcm'           Reverse Cuthill-McKee
     ! 'metisn'        Metis multilevel nested dissection by nodes
     ! 'metise'        Metis multilevel nested dissection by edges
     ! 'pq'            ddPQ strategy by Saad
     ordering = 'rcm'
-    
+
     ! threshold for ILU, default: 1e-2
     droptol = 1d-10
-    
+
     ! threshold for the approximate Schur complements, default: 0.1*droptol
     droptolS = 0.1*droptol
-    
+
     ! norm bound for the inverse factors L^{-1}, U^{-1}, default: 10
     condest = 10d0
-    
+
     ! relative error for the backward error (SPD case: relative energy norm) used during the iterative solver
     ! default: sqrt(eps)
     restol = 1d-6
-    
+
     ! maximum number of iterative steps, default: 500
     maxit = 1000
-    
+
     ! elbow space factor for the relative fill w.r.t. the given matrix, computed during the ILU, default: 10
     ! this value only gives a recommendation for the elbow space. ILUPACK will adapt this value automatically
     elbow = 10
-    
+
     ! maximum number of nonzeros per column in L/ row in U, default: n+1
     ! lfil = 10 * (nnz/(1.0*n))
-    
+
     ! maximum number of nonzeros per row in the approximate Schur complement, default: n+1
     ! lfilS = 10 * (nnz/(1.0*n))
-    
+
     ! restart length for GMRES, default: 30
     nrestart = 40
-    
+
     ! do you want to use a single precision preconditioner
     mixedprecision = 0
-    
+
     ! underlying block structure, only partially supported. default: right now turn it off!
     ind(:) = 0
-    
+
     
     ! ----------------------------------------
     ! ILUPACK compute multilevel ILU
     ! ----------------------------------------
     
-    ! Note that the initial input matrix A will be rescaled by rows and by columns (powers of 2.0) and that the 
+    ! Note that the initial input matrix A will be rescaled by rows and by columns (powers of 2.0) and that the
     ! order in the array might have been altered. If you do need the original matrix (ia,ja,a) in for different purposes,
     ! you should use a copy (ib,jb,b) instead compute multilevel ILU `PREC'
     ierr = DGNLAMGfactor(param, PREC, ndof, ia_tmp, ja_tmp, A_tmp, matching, ordering, droptol, droptolS,   &
                          condest, restol, maxit, elbow, lfil, lfilS, nrestart, mixedprecision, ind)
-    
+
     ! print some information
     if (print_times) call DGNLAMGinfo(param, PREC, ndof, ia_tmp, ja_tmp, A_tmp)
-    
+
     ! check for errors
     if (ierr /= 0) then
-    
+
       write(*,*) ''
       write(*,*) repeat('= ',20)
       write(*,*) 'ERROR in numgeo-ilupack:'
       write(*,*) ''
-    
+
       if (ierr == -1) then
         write (6,'(A)') 'Error. input matrix may be wrong.'
       elseif (ierr ==  -2) then
@@ -280,36 +280,36 @@ program main
       elseif (ierr.ne.0) then
         write (6,'(A,I3)') 'zero pivot encountered at step number', ierr
       endif
-      
+
       write(*,*) ''
       write(*,*) repeat('= ',20)
       write(*,*) ''
-      
+
       stop
-      
+
     end if
-    
+
     
     ! ----------------------------------------
     ! ILUPACK solve the linear system iteratively
     ! ----------------------------------------
-    
+
     ! provide an initial solution, e.g. 0
     solution = 0.0_r8
-    
+
     ! solve the system using the restartet GMRES solver build in in ILUPACK
     ierr = DGNLAMGsolver(param, PREC, r, solution, ndof, ia_tmp, ja_tmp, A_tmp, matching, ordering, &
                          droptol, droptolS, condest, restol, maxit, elbow, lfil, lfilS, nrestart,   &
                          mixedprecision, ind)
-                         
+
     ! check for errors
     if (ierr /= 0) then
-    
+
       write(*,*) ''
       write(*,*) repeat('= ',20)
       write(*,*) 'ERROR in numgeo-ilupack:'
       write(*,*) ''
-    
+
       if (ierr ==  -1) then
          write (6,'(A)') 'too many iteration steps'
       elseif (ierr ==  -2) then
@@ -317,13 +317,13 @@ program main
       elseif (ierr ==  -3) then
          write (6,'(A)') 'algorithm breaks down'
       end if
-      
+
       write(*,*) ''
       write(*,*) repeat('= ',20)
       write(*,*) ''
-      
+
       stop
-      
+
     end if
                          
                          

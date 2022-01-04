@@ -6,7 +6,7 @@ Program that solves a linear system of equations given in coordinate format usin
 
 ## Dependencies
 
-**numgeo-mumps-mpi** depends on the MUMPS solver library. However in order to build the mpi version of the MUMPS solver, additional libraries are required:
+**numgeo-mumps-mpi** depends on the MUMPS solver library [1,2]. However in order to build the mpi version of the MUMPS solver, additional libraries are required:
 
 1. MUMPS --> <http://mumps.enseeiht.fr/>
 1. BLAS/LAPACK 
@@ -45,3 +45,9 @@ This version comes with its own BLACS library.
 ## Building numgeo-mumps-mpi
 
 Use the make file to build numgeo-mumps-mpi
+
+
+## References
+[1] Amestoy, P.R., A. Buttari, J.-Y. L’Excellent, und T. Mary. „Performance and scalability of the block low-rank multifrontal factorization on multicore architectures“. ACM Transactions on Mathematical Software 45, Nr. 1 (2019): 2:1-2:26.
+
+[2] Amestoy, P.R., I. S. Duff, J. Koster, und J.-Y. L’Excellent. „A fully asynchronous multifrontal solver using distributed dynamic scheduling“. SIAM Journal on Matrix Analysis and Applications 23, Nr. 1 (2001): 15–41.

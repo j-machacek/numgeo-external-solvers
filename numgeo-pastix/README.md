@@ -24,7 +24,7 @@ This solver also provides some low-rank compression methods to reduce the memory
 	    * DPASTIX_INT64=OFF
 		* DPASTIX_WITH_FORTRAN=ON
 		* DPASTIX_ORDERING_SCOTCH=ON
-	* For the StarPU-version, you require the StarPU-library. On debian-based distributions StarPU can be installed from the repository:
+	* For the StarPU-version, you require the StarPU-library. On debian-based distributions StarPU can be installed from the repository (see also [https://files.inria.fr/starpu/doc/html/]):
 		```
 		apt-cache search starpu
 		sudo apt-get install libstarpu-1.3 libstarpu-dev
@@ -55,11 +55,13 @@ We testet three versions of PasTiX:
 ### PaStiX with runtime support based on StarPU with openMP
 
 When configuring StarPU use the following command: ```../configure --prefix=${STARPU_DIR} --enable-openmp --disable-mpi```
+Note: not so sure about this anymore - need to be checked again...
 
 
 ## TODO
 
 * Create GPU-Version of the library
+* Update Readme
 
 
 ## References

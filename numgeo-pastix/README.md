@@ -30,7 +30,7 @@ This solver also provides some low-rank compression methods to reduce the memory
 	```
 ### PaStiX - StarPU
 1. For the StarPU-version, you require the StarPU-library. On debian-based distributions StarPU can be installed from the repository (see also [https://files.inria.fr/starpu/doc/html/]):
-		```
+		``` 
 		apt-cache search starpu
 		sudo apt-get install libstarpu-1.3 libstarpu-dev
 		```

@@ -8,6 +8,17 @@ This software is part of the numgeo software developed by Jan Machacek and Patri
 
 ---
 
+* [Dependencies](#dependencies)
+* [Building PaStiX](#building-pastix)
+	* [PaStiX - serial](#pastix---serial)
+	* [PaStiX - StarPU](#pastix---starpu)
+* [Building numgeo-pastix](#building-numgeo-pastix)
+* [Known Bugs](#known-bugs)
+* [ToDo](#todo)
+* [References](#references)
+
+---
+
 ## Dependencies
 
 **numgeo-pastix** depends on the PaStiX library. 
@@ -69,18 +80,6 @@ PaStiX (Parallel Sparse matriX package) [1,2,3,4] is a scientific library that p
 ## Known Bugs
 
 * Currently PaStiX can't be used in calculations where all degrees of freedoms are constraint, e.g. if you want to simulate a "Geostatic step" with all nodes fixed in space. In such cases, this particular analysis step has to be solved using another solver, e.g. MUMPS. All other steps in the analysis can then be solved using PaStiX.
-
-
-## PaStiX with runtime support
-
-We testet three versions of PasTiX:
-1. Serial version of PaStiX
-2. PaStiX with runtime support based on StarPU with openMP (MPI diabled)
-
-### PaStiX with runtime support based on StarPU with openMP
-
-When configuring StarPU use the following command: ```../configure --prefix=${STARPU_DIR} --enable-openmp --disable-mpi```
-Note: not so sure about this anymore - need to be checked again...
 
 
 ## TODO

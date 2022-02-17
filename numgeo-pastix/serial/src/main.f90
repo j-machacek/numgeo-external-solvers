@@ -99,15 +99,6 @@ program main
   ! other currently unused variables
   ! integer                                                  :: nfact, nsolv
 
-  ! number of threads
-  !nthreads = omp_get_max_threads()
-  !write(*,*) 'threads = ', nthreads
-
-  !write(*,*) 'set threads = 6'
-  !call omp_set_num_threads(6)
-
-  !nthreads = omp_get_max_threads()
-  !write(*,*) 'threads are now = ', nthreads
 
   ! ----------------------------------------
   ! Evaluate command line and start timers
@@ -156,8 +147,10 @@ program main
   !
   ! Maximum block size Default: 320 IN
   iparm(IPARM_MAX_BLOCKSIZE) = int(2048)
+  
   ! Minimum block size Default: 160 IN
   iparm(IPARM_MIN_BLOCKSIZE) = int(1024)
+  
   ! 2D splitting is only performed on column blocks larger than this threshhold
   ! iparm(IPARM_TASKS2D_WIDTH) = 128
   

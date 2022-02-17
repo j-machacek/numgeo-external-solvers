@@ -100,7 +100,7 @@ spmf.o: ./src/spmf.f90 spm_enums.o
 
 # Objects and libraries
 USER_OBJS :=
-LIBS := -lpastixf -lspmf -lpastix -lpastix_kernels -lspm -llapacke -lopenblas -lpthread -lscotch -lscotcherrexit -lz -lm -lrt
+LIBS := -lpastixf -lspmf -lpastix -lpastix_kernels -lspm -llapacke -lopenblas -lpthread -lscotch -lscotcherrexit -lz -lm -lrt -lhwloc
 
 
 ifneq ($(MAKECMDGOALS),clean)

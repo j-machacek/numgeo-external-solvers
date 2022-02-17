@@ -24,20 +24,20 @@ This solver also provides some low-rank compression methods to reduce the memory
 1. Go in your PaStiX source directory and create a new build directory to build the default shared memory (without MPI) version
 2. Create the build directory ```mkdir build```
 3. Move to the directory ```cd build```
-4. Configure the make file using the following command:
+4. Configure the make file using the following command: 
 	``` 
 	cmake .. -DCMAKE_BUILD_TYPE=Release -DPASTIX_INT64=OFF -DPASTIX_ORDERING_SCOTCH=ON -DPASTIX_WITH_FORTRAN=ON 
 	```
 ### PaStiX - StarPU
-1. For the StarPU-version, you require the StarPU-library. On debian-based distributions StarPU can be installed from the repository (see also [https://files.inria.fr/starpu/doc/html/]):
-		``` 
-		apt-cache search starpu
-		sudo apt-get install libstarpu-1.3 libstarpu-dev
-		```
+1. For the StarPU-version, you require the StarPU-library. On debian-based distributions StarPU can be installed from the repository (see also [https://files.inria.fr/starpu/doc/html/]): 
+	``` 
+	apt-cache search starpu
+	sudo apt-get install libstarpu-1.3 libstarpu-dev
+	```
 2. Go in your PaStiX source directory and create a new build directory to build the default shared memory (without MPI) version
 3. Create the build directory ```mkdir build```
 4. Move to the directory ```cd build```
-5. Configure the make file using the following command:
+5. Configure the make file using the following command: 
 	``` 
 	cmake .. -DCMAKE_BUILD_TYPE=Release -DPASTIX_INT64=OFF -DPASTIX_ORDERING_SCOTCH=OFF -DPASTIX_ORDERING_METIS=ON -DPASTIX_WITH_STARPU=ON -DPASTIX_WITH_FORTRAN=ON
 	```

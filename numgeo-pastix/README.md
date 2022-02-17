@@ -36,8 +36,8 @@ PaStiX (Parallel Sparse matriX package) [1,2,3,4] is a scientific library that p
 	sudo apt-get install libstarpu-1.3 libstarpu-dev
 	```
 2. Go in your PaStiX source directory and create a new build directory to build the default shared memory (without MPI) version
-3. Create the build directory: ```mkdir build```
-4. Move to the directory: ```cd build```
+3. Create the build directory: ```mkdir build_starpu```
+4. Move to the directory: ```cd build_starpu```
 5. Configure the make file using the following command: 
 	``` 
 	cmake .. -DCMAKE_BUILD_TYPE=Release -DPASTIX_INT64=OFF -DPASTIX_ORDERING_SCOTCH=OFF -DPASTIX_ORDERING_METIS=ON -DPASTIX_WITH_STARPU=ON -DPASTIX_WITH_FORTRAN=ON
@@ -47,7 +47,17 @@ PaStiX (Parallel Sparse matriX package) [1,2,3,4] is a scientific library that p
 5. Create the make file: ```make```
 
 ## Building numgeo-pastix
-1. Copy the following PaStiX libraries to numgeo-pastix/lib: libpastix.a, libpastixf.a, libpastix_kernels.a, libpastix_starpu.a, libspm.a and libspmf.a
+
+1. Copy the following PaStiX libraries to numgeo-pastix/lib or numgeo-pastix-starpu/lib: 
+	* libpastix.a (from pastix/BuildDir/)
+	* libpastixf.a (from pastix/BuildDir/wrappers/fortran90/)
+	* libpastix_kernels.a (from pastix/BuildDir/kernels/)
+	* libpastix_starpu.a (from pastix/BuildDir/sopalin/, only for the StarPU version)
+	* libspm.a (from pastix/BuildDir/spm/src/)
+	* libspmf.a (from pastix/BuildDir/spm/wrappers/fortran90/)
+
+	>Note: Dir corresponds to the version of numgeo-pastix you want to build: the serial version (Dir=serial) or the StarPU-version (BuildDir=build_starpu)
+
 2. Copy the files "pastix_enums.F90" and "pastixf.f90" from pastix/wrappers/fortran90/src/ to numgeo-pastix/Dir/src/ and replace the old ones
 3. Copy the files "spm_enums.F90" and "spmf.f90" from pastix/spm/fortran90/src/ to numgeo-pastix/Dir/src/ and replace the old ones
 4. Open the Terminal in the numgeo-pastix directory

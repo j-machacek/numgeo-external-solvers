@@ -16,19 +16,31 @@ PaStiX (Parallel Sparse matriX package) is a scientific library that provides a 
 Numerical algorithms are implemented in single or double precision (real or complex) using LLt, LDLt and LU with static pivoting (for non symmetric matrices having a symmetric pattern).
 This solver also provides some low-rank compression methods to reduce the memory footprint and/or the time-to-solution.
 
-## Building numgeo-pastix
+## Building PaStiX
 1. Get PaStiX from [https://gitlab.inria.fr/solverstack/pastix]
-2. Build the PaStix library following the instruction given in [https://solverstack.gitlabpages.inria.fr/pastix/md_docs_doxygen_chapters_Pastix_Install.html]
-	* We used the following flags:
-	    * CMAKE_BUILD_TYPE=Release
-	    * DPASTIX_INT64=OFF
-		* DPASTIX_WITH_FORTRAN=ON
-		* DPASTIX_ORDERING_SCOTCH=ON
-	* For the StarPU-version, you require the StarPU-library. On debian-based distributions StarPU can be installed from the repository (see also [https://files.inria.fr/starpu/doc/html/]):
+2. Build the PaStix library following the instruction given in [https://solverstack.gitlabpages.inria.fr/pastix/md_docs_doxygen_chapters_Pastix_Install.html] and summarized in the following
+
+### PaStiX - serial
+1. Go in your PaStiX source directory and create a new build directory to build the default shared memory (without MPI) version
+2. Create the build directory ```mkdir build```
+3. Move to the directory ```cd build```
+4. Configure the make file using the following command:
+	``` cmake .. -DCMAKE_BUILD_TYPE=Release -DPASTIX_INT64=OFF -DPASTIX_ORDERING_SCOTCH=ON -DPASTIX_WITH_FORTRAN=ON - ```
+### PaStiX - StarPU
+1. For the StarPU-version, you require the StarPU-library. On debian-based distributions StarPU can be installed from the repository (see also [https://files.inria.fr/starpu/doc/html/]):
 		```
 		apt-cache search starpu
 		sudo apt-get install libstarpu-1.3 libstarpu-dev
 		```
+2. Go in your PaStiX source directory and create a new build directory to build the default shared memory (without MPI) version
+3. Create the build directory ```mkdir build```
+4. Move to the directory ```cd build```
+5. Configure the make file using the following command:
+	``` cmake .. -DCMAKE_BUILD_TYPE=Release -DPASTIX_INT64=OFF -DPASTIX_ORDERING_SCOTCH=OFF -DPASTIX_ORDERING_METIS=ON -DPASTIX_WITH_STARPU=ON -DPASTIX_WITH_FORTRAN=ON```
+
+	> We encountered some problems when compiling PaStiX with StarPU + Scotch support due to DPASTIX_INT64 that we could not resolve. We therefore switched to metis.
+	
+## Building numgeo-pastix
 3. Copy the PaStiX library to numgeo-pastix/lib
 4. Copy the files "pastix_enums.F90" and "pastixf.f90" from pastix/wrappers/fortran90/src/ to numgeo-pastix/Dir/src/ and replace the old ones
 5. Copy the files "spm_enums.F90" and "spmf.f90" from pastix/spm/fortran90/src/ to numgeo-pastix/Dir/src/ and replace the old ones

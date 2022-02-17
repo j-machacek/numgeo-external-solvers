@@ -262,6 +262,15 @@ program main
   ! To reduce the number of static pivots
   dparm(DPARM_EPSILON_MAGN_CTRL) = real(1e-15)
 
+  ! Maximum block size Default: 320 IN
+  iparm(IPARM_MAX_BLOCKSIZE) = 2048
+
+  ! Minimum block size Default: 160 IN
+  iparm(IPARM_MIN_BLOCKSIZE = 1024
+
+  ! 2D splitting is only performed on column blocks larger than this threshhold
+  iparm(IPARM_TASKS2D_LEVEL) = 128
+
   ! 3- Factorize the matrix
   call pastix_task_numfact( pastix_data, spm, info )
 

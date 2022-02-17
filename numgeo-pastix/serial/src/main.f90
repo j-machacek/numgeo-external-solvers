@@ -18,6 +18,7 @@
 !
 !>### REVISION HISTORY
 !> 11.01.2022, J. Machacek - Initial version
+!> 28.01.2022, J. Machacek - Added modification of iparm to improve performance
 !
 !>### DISCLAIMER
 ! This program is distributed in the hope that it will be useful,
@@ -145,6 +146,25 @@ program main
   ! ----------------------------------------
 
   call pastixInitParam( iparm, dparm )
+
+  ! The following modifications have been chosen according to 
+  ! "Linear Equation Solvers on GPU Architectures for Finite Element Methods in Structural Mechanics"
+  ! by Peter Wauligmann
+  ! These modifications are reported to increase the performance of PaStiX for structural problems
+  !
+  ! Currently it seems not to be accepted. It is just ignored and the default values are used.
+  !
+  ! Maximum block size Default: 320 IN
+  iparm(IPARM_MAX_BLOCKSIZE) = int(2048)
+  ! Minimum block size Default: 160 IN
+  iparm(IPARM_MIN_BLOCKSIZE) = int(1024)
+  ! 2D splitting is only performed on column blocks larger than this threshhold
+  ! iparm(IPARM_TASKS2D_WIDTH) = 128
+  
+  ! Number of threads per process (-1 for auto detect) Default: -1
+  ! iparm(IPARM_THREAD_NBR) = nthreads
+  
+  
   call pastixInit( pastix_data, 0, iparm, dparm )
 
   allocate( spm )
@@ -252,12 +272,9 @@ program main
   ! ----------------------------------------
   ! PaStiX: start solving
   ! ----------------------------------------
-
+  
   ! 2- Analyze the problem
   call pastix_task_analyze( pastix_data, spm, info )
-
-  ! Number of threads per process (-1 for auto detect) Default: -1
-  iparm(IPARM_THREAD_NBR) = nthreads
 
   ! To reduce the number of static pivots
   dparm(DPARM_EPSILON_MAGN_CTRL) = real(1e-15)

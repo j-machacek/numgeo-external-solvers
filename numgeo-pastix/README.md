@@ -49,14 +49,14 @@ PaStiX (Parallel Sparse matriX package) [1,2,3,4] is a scientific library that p
 ## Building numgeo-pastix
 
 1. Copy the following PaStiX libraries to numgeo-pastix/lib or numgeo-pastix-starpu/lib: 
-	* libpastix.a (from pastix/BuildDir/)
-	* libpastixf.a (from pastix/BuildDir/wrappers/fortran90/)
-	* libpastix_kernels.a (from pastix/BuildDir/kernels/)
-	* libpastix_starpu.a (from pastix/BuildDir/sopalin/, only for the StarPU version)
-	* libspm.a (from pastix/BuildDir/spm/src/)
-	* libspmf.a (from pastix/BuildDir/spm/wrappers/fortran90/)
+	* libpastix.a (from *pastix/**BuildDir**/*)
+	* libpastixf.a (from *pastix/**BuildDir**/wrappers/fortran90/*)
+	* libpastix_kernels.a (from *pastix/**BuildDir**/kernels/*)
+	* libpastix_starpu.a (from *pastix/**BuildDir**/sopalin/*, only for the StarPU version)
+	* libspm.a (from *pastix/**BuildDir**/spm/src/*)
+	* libspmf.a (from *pastix/**BuildDir**/spm/wrappers/fortran90/*)
 
-	>Note: BuildDir corresponds to the version of numgeo-pastix you want to build. If you followed our suggestions above, then the serial version is *BuildDir=build* and the StarPU-version is *BuildDir=build_starpu*
+	>Note: **BuildDir** corresponds to the version of numgeo-pastix you want to build. If you followed our suggestions above, then the serial version is **BuildDir**=build and the StarPU-version is **BuildDir**=build_starpu
 
 2. Copy the files "pastix_enums.F90" and "pastixf.f90" from pastix/wrappers/fortran90/src/ to numgeo-pastix/Dir/src/ and replace the old ones
 3. Copy the files "spm_enums.F90" and "spmf.f90" from pastix/spm/fortran90/src/ to numgeo-pastix/Dir/src/ and replace the old ones

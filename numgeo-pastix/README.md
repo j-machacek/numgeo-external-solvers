@@ -25,7 +25,9 @@ This solver also provides some low-rank compression methods to reduce the memory
 2. Create the build directory ```mkdir build```
 3. Move to the directory ```cd build```
 4. Configure the make file using the following command:
-	``` cmake .. -DCMAKE_BUILD_TYPE=Release -DPASTIX_INT64=OFF -DPASTIX_ORDERING_SCOTCH=ON -DPASTIX_WITH_FORTRAN=ON - ```
+	``` 
+	cmake .. -DCMAKE_BUILD_TYPE=Release -DPASTIX_INT64=OFF -DPASTIX_ORDERING_SCOTCH=ON -DPASTIX_WITH_FORTRAN=ON 
+	```
 ### PaStiX - StarPU
 1. For the StarPU-version, you require the StarPU-library. On debian-based distributions StarPU can be installed from the repository (see also [https://files.inria.fr/starpu/doc/html/]):
 		```
@@ -36,10 +38,12 @@ This solver also provides some low-rank compression methods to reduce the memory
 3. Create the build directory ```mkdir build```
 4. Move to the directory ```cd build```
 5. Configure the make file using the following command:
-	``` cmake .. -DCMAKE_BUILD_TYPE=Release -DPASTIX_INT64=OFF -DPASTIX_ORDERING_SCOTCH=OFF -DPASTIX_ORDERING_METIS=ON -DPASTIX_WITH_STARPU=ON -DPASTIX_WITH_FORTRAN=ON```
+	``` 
+	cmake .. -DCMAKE_BUILD_TYPE=Release -DPASTIX_INT64=OFF -DPASTIX_ORDERING_SCOTCH=OFF -DPASTIX_ORDERING_METIS=ON -DPASTIX_WITH_STARPU=ON -DPASTIX_WITH_FORTRAN=ON
+	```
 
 	> We encountered some problems when compiling PaStiX with StarPU + Scotch support due to DPASTIX_INT64 that we could not resolve. We therefore switched to metis.
-	
+
 ## Building numgeo-pastix
 3. Copy the PaStiX library to numgeo-pastix/lib
 4. Copy the files "pastix_enums.F90" and "pastixf.f90" from pastix/wrappers/fortran90/src/ to numgeo-pastix/Dir/src/ and replace the old ones

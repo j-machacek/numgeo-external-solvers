@@ -266,7 +266,7 @@ program main
   iparm(IPARM_MAX_BLOCKSIZE) = 2048
 
   ! Minimum block size Default: 160 IN
-  iparm(IPARM_MIN_BLOCKSIZE = 1024
+  iparm(IPARM_MIN_BLOCKSIZE) = 1024
 
   ! 2D splitting is only performed on column blocks larger than this threshhold
   iparm(IPARM_TASKS2D_LEVEL) = 128

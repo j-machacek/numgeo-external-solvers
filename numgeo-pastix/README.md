@@ -47,7 +47,7 @@ PaStiX (Parallel Sparse matriX package) [1,2,3,4] is a scientific library that p
 5. Create the make file: ```make```
 
 ## Building numgeo-pastix
-3. Copy the PaStiX library to numgeo-pastix/lib
+3. Copy the following PaStiX libraries to numgeo-pastix/lib: libpastix.a, libpastixf.a, libpastix_kernels.a, libpastix_starpu.a, libspm.a and libspmf.a
 4. Copy the files "pastix_enums.F90" and "pastixf.f90" from pastix/wrappers/fortran90/src/ to numgeo-pastix/Dir/src/ and replace the old ones
 5. Copy the files "spm_enums.F90" and "spmf.f90" from pastix/spm/fortran90/src/ to numgeo-pastix/Dir/src/ and replace the old ones
 6. Open the Terminal in the numgeo-pastix directory

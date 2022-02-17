@@ -26,7 +26,7 @@ PaStiX (Parallel Sparse matriX package) [1,2,3,4] is a scientific library that p
 	``` 
 	cmake .. -DCMAKE_BUILD_TYPE=Release -DPASTIX_INT64=OFF -DPASTIX_ORDERING_SCOTCH=ON -DPASTIX_WITH_FORTRAN=ON 
 	```
-5. Create the make file: ```make```
+5. Create the make file: ```make all```
 
 
 ### PaStiX - StarPU
@@ -44,7 +44,7 @@ PaStiX (Parallel Sparse matriX package) [1,2,3,4] is a scientific library that p
 	```
 
 	> We encountered some problems when compiling PaStiX with StarPU + Scotch support due to DPASTIX_INT64 that we could not resolve. We therefore switched to metis.
-5. Create the make file: ```make```
+5. Create the make file: ```make all```
 
 ## Building numgeo-pastix
 
@@ -55,18 +55,16 @@ PaStiX (Parallel Sparse matriX package) [1,2,3,4] is a scientific library that p
 	* libpastix_starpu.a (from *pastix/**BuildDir**/sopalin/*, only for the StarPU version)
 	* libspm.a (from *pastix/**BuildDir**/spm/src/*)
 	* libspmf.a (from *pastix/**BuildDir**/spm/wrappers/fortran90/*)
-	* >Note: **BuildDir** corresponds to the version of numgeo-pastix you want to build. If you followed our suggestions above, then the serial version is **BuildDir**=build and the StarPU-version is **BuildDir**=build_starpu
+	* >**BuildDir** corresponds to the version of numgeo-pastix you want to build. If you followed our suggestions above, then the serial version is **BuildDir**=build and the StarPU-version is **BuildDir**=build_starpu
 
-2. Copy the files "pastix_enums.F90" and "pastixf.f90" from pastix/wrappers/fortran90/src/ to numgeo-pastix/Dir/src/ and replace the old ones
-3. Copy the files "spm_enums.F90" and "spmf.f90" from pastix/spm/fortran90/src/ to numgeo-pastix/Dir/src/ and replace the old ones
+2. Optional: Copy the files "pastix_enums.F90" and "pastixf.f90" from pastix/wrappers/fortran90/src/ to numgeo-pastix/Dir/src/ and replace the old ones
+3. Optional: Copy the files "spm_enums.F90" and "spmf.f90" from pastix/spm/fortran90/src/ to numgeo-pastix/Dir/src/ and replace the old ones
 4. Open the Terminal in the numgeo-pastix directory
 5. Use make to build the executable:
    ```
    make clean
    make all
    ```
-
->Note: Dir corresponds to the version of numgeo-pastix you want to build: the serial version (Dir=serial) or the StarPU-version (Dir=starpu)
 
 ## Known Bugs
 

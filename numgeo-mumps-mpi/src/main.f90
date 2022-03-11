@@ -19,6 +19,7 @@
 !> 26.02.2021, P. Staubach - Added job-name to the reading and writing files to be able to perform several analyses in one folder
 !> 20.04.2021, J. Machacek - Added format to read settings-file (mpi error on some architectures)
 !> 23.12.2021, J. Machacek - Adapted to new numgeo output format
+!> 11.03.2022, J. Machacek - Continue numgeo simulation if mumps returns an error
 !
 !>### DISCLAIMER
 ! This program is distributed in the hope that it will be useful,
@@ -107,6 +108,7 @@ program main
       write(*,*) ''
       write(*,*) repeat('= ',20)
       write(*,*) ''
+	  call mpi_finalize(ierr)
       stop
     end if
 
@@ -170,7 +172,7 @@ program main
   ! Perform iterative refinement
   ! 0  -> Default value (no iterative refinement)
   ! <0 -> if the convergence test should not be done, MUMPS recommends to set ICNTL(10) to -2 or -3.
-  ! >0 -> run XX steps of iterative refinement with stopping criterium
+  ! >0 -> run XX steps of iterative refinement with stopping criterion
   dmumps_par%icntl(10) = 3
 
   ! compute statistics?
@@ -194,7 +196,6 @@ program main
       write(*,*) ' and INFOG(2) = ', dmumps_par%INFOG(2)
       write(*,*) ''
       write(*,*) repeat('= ',20)
-      write(*,*) ''
       stop
     end if
 
@@ -239,7 +240,6 @@ program main
       write(*,*) ''
       write(*,*) repeat('= ',20)
       write(*,*) ''
-      stop
     end if
 	
 	if (print_times) then

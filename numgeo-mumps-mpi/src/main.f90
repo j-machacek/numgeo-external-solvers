@@ -1,6 +1,6 @@
 !=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~=~
 !                                          numgeo
-!                     Copyright (C) 2021 Jan Machacek, Patrick Staubach
+!                Copyright (C) 2018-2022 Jan Machacek, Patrick Staubach
 !=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~~=~=~
 !
 ! PROGRAM: numgeo-mumps-mpi
@@ -153,15 +153,37 @@ program main
 
   endif
 
-  ! tell mumps not to print output messages
+  ! process id to which output messages should be printed
+  !self%dmumps_par%icntl(1) = 0 !! print error messages
+  !self%dmumps_par%icntl(2) = 0 !! print diagnostic and statistics messages
+  !self%dmumps_par%icntl(3) = 0 !! print global information
   dmumps_par%icntl(2) = 0
   dmumps_par%icntl(3) = 0
-  dmumps_par%icntl(4) = 2 ! only errors will be printed
+  
+  ! level of printing for error, warning, and diagnostic messages
+  ! 0 : No messages output
+  ! 1 : Only error messages
+  ! 2 : Errors, warnings, and main statistics
+  ! 3 : Errors and warnings and terse diagnostics (only first ten entries of arrays)
+  ! 4 : Errors, warnings and information on input, output parameters
+  self%dmumps_par%icntl(4) = 0
 
   ! tell mumps to use the scotch ordering library
-  ! 3 -> Scotch
-  ! 5 -> metis
-  dmumps_par%icntl(7) = 5
+  ! scotch -> 3
+  ! metis  -> 5
+  self%dmumps_par%icntl(7) = 3
+
+  ! Scaling strategy
+  ! -1: Scaling provided by the user. Scaling arrays must be provided in COLSCA and ROWSCA on entry to the numerical factorization phase
+  ! 0 : No scaling applied/computed.
+  ! 1 : Diagonal scaling computed during the numerical factorization phase,
+  ! 3 : Column scaling computed during the numerical factorization phase,
+  ! 4 : Row and column scaling based on infinite row/column norms, computed during the numerical
+  ! factorization phase,
+  ! 7 : Simultaneous row and column iterative scaling based on [41] and [15] computed during the numerical factorization phase.
+  ! 8 : Similar to 7 but more rigorous
+  ! 77 : Automatic choice of the value of ICNTL(8) done during analysis -> default
+  ! self%dmumps_par%icntl(8) = 7
 
   ! tell mumps to perform the following steps:
   !  - ordering
@@ -172,13 +194,18 @@ program main
   ! Perform iterative refinement
   ! 0  -> Default value (no iterative refinement)
   ! <0 -> if the convergence test should not be done, MUMPS recommends to set ICNTL(10) to -2 or -3.
-  ! >0 -> run XX steps of iterative refinement with stopping criterion
-  dmumps_par%icntl(10) = 3
+  ! >0 -> run XX steps of iterative refinement with stopping criterium
+  self%dmumps_par%icntl(10) = 0
 
   ! compute statistics?
   ! 2 -> compute main statistics
   ! 0 -> default
   dmumps_par%icntl(11) = 0
+
+  ! drop tolerance of pivoting
+  ! In general, a larger value of CNTL(1) increases fill-in but leads to a more accurate factorization.
+  ! Default value is 0.01. Common values are 0.01 < cntl(1) < 0.1
+  self%dmumps_par%cntl(1) = 0.01d0
 
   call DMUMPS(dmumps_par)
 
